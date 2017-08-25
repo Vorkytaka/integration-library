@@ -24,7 +24,10 @@ public final class PaymentMapper {
             return null;
         }
         String uuid = bundle.getString(KEY_UUID);
-        BigDecimal value = new BigDecimal(bundle.getString(KEY_VALUE));
+        BigDecimal value = BundleUtils.getMoney(bundle, KEY_VALUE);
+        if (value == null) {
+            return null;
+        }
         PaymentSystem paymentSystem = PaymentSystemMapper.from(bundle.getBundle(KEY_SYSTEM));
         String purposeIdentifier = bundle.getString(KEY_PURPOSE_IDENTIFIER);
         String accountId = bundle.getString(KEY_ACCOUNT_ID);

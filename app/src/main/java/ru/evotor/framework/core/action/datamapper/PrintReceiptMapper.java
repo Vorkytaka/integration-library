@@ -52,7 +52,11 @@ public final class PrintReceiptMapper {
         for (int i = 0; i < paymentsParcelableList.size(); i++) {
             Bundle completePaymentBundle = paymentsParcelableList.get(i);
             Payment payment = PaymentMapper.from(completePaymentBundle.getBundle(KEY_SINGLE_PAYMENT));
-            payments.put(payment, new BigDecimal(completePaymentBundle.getString(KEY_SINGLE_PAYMENT_VALUE)));
+            BigDecimal value = BundleUtils.getMoney(completePaymentBundle, KEY_SINGLE_PAYMENT_VALUE);
+            if (value == null || payment == null) {
+                continue;
+            }
+            payments.put(payment, value);
         }
 
         Map<Payment, BigDecimal> changes = new HashMap<>();
@@ -63,7 +67,12 @@ public final class PrintReceiptMapper {
         for (int i = 0; i < changesParcelableList.size(); i++) {
             Bundle completeChangeBundle = changesParcelableList.get(i);
             Payment change = PaymentMapper.from(completeChangeBundle.getBundle(KEY_SINGLE_CHANGE));
-            changes.put(change, new BigDecimal(completeChangeBundle.getString(KEY_SINGLE_CHANGE_VALUE)));
+
+            BigDecimal value = BundleUtils.getMoney(completeChangeBundle, KEY_SINGLE_CHANGE_VALUE);
+            if (value == null || change == null) {
+                continue;
+            }
+            changes.put(change, value);
         }
 
         return new Receipt.PrintReceipt(

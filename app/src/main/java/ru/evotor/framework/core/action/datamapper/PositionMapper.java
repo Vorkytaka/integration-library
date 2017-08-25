@@ -57,9 +57,7 @@ public final class PositionMapper {
         BigDecimal quantity = BundleUtils.getQuantity(bundle, KEY_QUANTITY);
         String barcode = bundle.getString(KEY_BARCODE);
         String mark = bundle.getString(KEY_MARK);
-        String alcoholByVolume = bundle.getString(KEY_ALCOHOL_BY_VOLUME);
         String alcoholProductKindCode = bundle.getString(KEY_ALCOHOL_PRODUCT_KIND_CODE);
-        String tareVolume = bundle.getString(KEY_TARE_VOLUME);
 
         Parcelable[] extraKeysParcelable = bundle.getParcelableArray(KEY_EXTRA_KEYS);
         Set<ExtraKey> extraKeys = new HashSet<>();
@@ -100,9 +98,9 @@ public final class PositionMapper {
                 quantity,
                 barcode,
                 mark,
-                alcoholByVolume == null ? null : new BigDecimal(alcoholByVolume),
+                BundleUtils.getBigDecimal(bundle, KEY_ALCOHOL_BY_VOLUME, null),
                 alcoholProductKindCode == null ? null : Long.valueOf(alcoholProductKindCode),
-                tareVolume == null ? null : new BigDecimal(tareVolume),
+                BundleUtils.getBigDecimal(bundle, KEY_TARE_VOLUME, null),
                 extraKeys,
                 subPositions
         );
